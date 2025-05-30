@@ -1,0 +1,277 @@
+name: Build and Release CursorClone
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Create a release"
+        required: false
+        default: false
+        type: boolean
+      platform:
+        description: "Platform to build"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - linux
+          - darwin
+          - win32
+
+env:
+  NODE_VERSION: "18.x"
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux builds
+          - platform: linux
+            arch: x64
+            os: ubuntu-latest
+          - platform: linux
+            arch: arm64
+            os: ubuntu-latest
+
+          # macOS builds
+          - platform: darwin
+            arch: x64
+            os: macos-latest
+          - platform: darwin
+            arch: arm64
+            os: macos-latest
+
+          # Windows builds
+          - platform: win32
+            arch: x64
+            os: windows-latest
+          - platform: win32
+            arch: arm64
+            os: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Setup Python (for native modules)
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libx11-dev libxkbfile-dev libsecret-1-dev libfontconfig1-dev
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download Electron
+        run: npm run electron
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Compile Extensions
+        run: npm run compile-extensions
+
+      - name: Build native modules
+        run: npm run build:native
+
+      - name: Package CursorClone
+        run: node build-cursorclone.js --platform ${{ matrix.platform }} --arch ${{ matrix.arch }}
+
+      - name: Create archive name
+        id: archive
+        shell: bash
+        run: |
+          if [ "${{ matrix.platform }}" = "darwin" ]; then
+            echo "name=CursorClone-${{ matrix.platform }}-${{ matrix.arch }}.zip" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.platform }}" = "win32" ]; then
+            echo "name=CursorClone-${{ matrix.platform }}-${{ matrix.arch }}.zip" >> $GITHUB_OUTPUT
+          else
+            echo "name=CursorClone-${{ matrix.platform }}-${{ matrix.arch }}.tar.gz" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create release archive (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          cd .build
+          tar -czf ${{ steps.archive.outputs.name }} VSCode-linux-${{ matrix.arch }}
+
+      - name: Create release archive (macOS)
+        if: matrix.platform == 'darwin'
+        run: |
+          cd .build
+          zip -r ${{ steps.archive.outputs.name }} VSCode-darwin-${{ matrix.arch }}
+
+      - name: Create release archive (Windows)
+        if: matrix.platform == 'win32'
+        run: |
+          cd .build
+          Compress-Archive -Path VSCode-win32-${{ matrix.arch }} -DestinationPath ${{ steps.archive.outputs.name }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cursorclone-${{ matrix.platform }}-${{ matrix.arch }}
+          path: .build/${{ steps.archive.outputs.name }}
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: []
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libx11-dev libxkbfile-dev libsecret-1-dev
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download Electron
+        run: npm run electron
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Run unit tests
+        run: npm run test-node
+
+      - name: Run browser tests
+        run: npm run test-browser
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.release == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: CursorClone ${{ github.ref_name }}
+          body: |
+            # CursorClone ${{ github.ref_name }}
+
+            ## 🚀 Features
+            - AI-powered code completion and suggestions
+            - Full VS Code compatibility with all extensions
+            - Enhanced productivity features
+            - Cross-platform support (Windows, macOS, Linux)
+
+            ## 📦 Downloads
+            Choose the appropriate package for your platform:
+
+            ### Windows
+            - [CursorClone-win32-x64.zip](./CursorClone-win32-x64.zip) - Windows 64-bit (Intel/AMD)
+            - [CursorClone-win32-arm64.zip](./CursorClone-win32-arm64.zip) - Windows ARM64
+
+            ### macOS
+            - [CursorClone-darwin-x64.zip](./CursorClone-darwin-x64.zip) - macOS 64-bit (Intel)
+            - [CursorClone-darwin-arm64.zip](./CursorClone-darwin-arm64.zip) - macOS ARM64 (Apple Silicon)
+
+            ### Linux
+            - [CursorClone-linux-x64.tar.gz](./CursorClone-linux-x64.tar.gz) - Linux 64-bit (Intel/AMD)
+            - [CursorClone-linux-arm64.tar.gz](./CursorClone-linux-arm64.tar.gz) - Linux ARM64
+
+            ## 🔄 Changes
+            See the [commit history](https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}) for detailed changes.
+
+            ## 🐛 Bug Reports
+            If you encounter any issues, please [create an issue](https://github.com/${{ github.repository }}/issues/new).
+          files: artifacts/**/*
+          draft: false
+          prerelease: contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sync-upstream:
+    name: Sync with VS Code upstream
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.sync == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "CursorClone Bot"
+          git config user.email "bot@cursorclone.dev"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/microsoft/vscode.git || true
+          git fetch upstream
+
+      - name: Create sync branch
+        run: |
+          SYNC_BRANCH="sync-upstream-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b $SYNC_BRANCH
+          echo "SYNC_BRANCH=$SYNC_BRANCH" >> $GITHUB_ENV
+
+      - name: Merge upstream changes
+        run: |
+          git merge upstream/main --no-edit --allow-unrelated-histories
+
+      - name: Push sync branch
+        run: |
+          git push origin $SYNC_BRANCH
+
+      - name: Create Pull Request
+        uses: repo-sync/github-sync@v2
+        with:
+          source_repo: "microsoft/vscode"
+          source_branch: "main"
+          destination_branch: ${{ env.SYNC_BRANCH }}
+          pr_title: "Sync with VS Code upstream"
+          pr_body: |
+            This PR syncs CursorClone with the latest changes from VS Code upstream.
+
+            Please review the changes carefully and ensure CursorClone branding is preserved.
+          github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -15,7 +15,7 @@ CursorClone is a modern, AI-powered code editor built on the foundation of Visua
 ## Key Features
 
 - 🤖 **AI-Powered Code Completion** - Intelligent code suggestions and auto-completion
-- 🔍 **Smart Code Analysis** - Advanced code understanding and refactoring suggestions  
+- 🔍 **Smart Code Analysis** - Advanced code understanding and refactoring suggestions
 - 🚀 **Enhanced Productivity** - AI-assisted development workflows
 - 🌍 **Multi-Platform Support** - Available for Windows, macOS, and Linux
 - 🔧 **Extensible Architecture** - Full compatibility with VS Code extensions
@@ -26,6 +26,7 @@ CursorClone is a modern, AI-powered code editor built on the foundation of Visua
 ### Installation
 
 Download the latest release for your platform:
+
 - [Windows (x64)](https://github.com/magare/vscode/releases/latest)
 - [macOS (Intel)](https://github.com/magare/vscode/releases/latest)
 - [macOS (Apple Silicon)](https://github.com/magare/vscode/releases/latest)
@@ -62,14 +63,17 @@ chmod +x build-cursorclone.js
 ### Platform-specific Requirements
 
 **Linux:**
+
 ```bash
 sudo apt-get install build-essential pkg-config libx11-dev libxkbfile-dev libsecret-1-dev
 ```
 
 **macOS:**
+
 - Xcode Command Line Tools
 
 **Windows:**
+
 - Visual Studio Build Tools or Visual Studio Community
 
 ### Building
@@ -116,7 +120,7 @@ We welcome contributions to CursorClone! Here's how you can help:
 ### Ways to Contribute
 
 - 🐛 **Bug Reports** - Report issues and bugs
-- 💡 **Feature Requests** - Suggest new AI-powered features  
+- 💡 **Feature Requests** - Suggest new AI-powered features
 - 🔧 **Code Contributions** - Submit pull requests
 - 📖 **Documentation** - Improve documentation and examples
 - 🧪 **Testing** - Help test new features and releases
@@ -163,18 +167,21 @@ CursorClone Architecture
 ## Roadmap
 
 ### Current Focus (v1.x)
+
 - ✅ Complete VS Code fork and rebranding
 - ✅ Automated build system
 - ⏳ Basic AI code completion
 - ⏳ Enhanced IntelliSense
 
 ### Upcoming (v2.x)
+
 - 🔄 Advanced AI code analysis
 - 🔄 Smart refactoring suggestions
 - 🔄 Natural language code generation
 - 🔄 AI-powered debugging assistance
 
 ### Future (v3.x+)
+
 - 📋 Multi-model AI support
 - 📋 Custom AI model integration
 - 📋 Collaborative AI features
@@ -201,21 +208,21 @@ CursorClone is licensed under the [MIT License](LICENSE.txt), the same as the un
 **Note**: CursorClone is an independent project and is not affiliated with Microsoft or the official Visual Studio Code product.
 please see the document [How to Contribute](https://github.com/microsoft/vscode/wiki/How-to-Contribute), which covers the following:
 
-* [How to build and run from source](https://github.com/microsoft/vscode/wiki/How-to-Contribute)
-* [The development workflow, including debugging and running tests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#debugging)
-* [Coding guidelines](https://github.com/microsoft/vscode/wiki/Coding-Guidelines)
-* [Submitting pull requests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#pull-requests)
-* [Finding an issue to work on](https://github.com/microsoft/vscode/wiki/How-to-Contribute#where-to-contribute)
-* [Contributing to translations](https://aka.ms/vscodeloc)
+- [How to build and run from source](https://github.com/microsoft/vscode/wiki/How-to-Contribute)
+- [The development workflow, including debugging and running tests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#debugging)
+- [Coding guidelines](https://github.com/microsoft/vscode/wiki/Coding-Guidelines)
+- [Submitting pull requests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#pull-requests)
+- [Finding an issue to work on](https://github.com/microsoft/vscode/wiki/How-to-Contribute#where-to-contribute)
+- [Contributing to translations](https://aka.ms/vscodeloc)
 
 ## Feedback
 
-* Ask a question on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode)
-* [Request a new feature](CONTRIBUTING.md)
-* Upvote [popular feature requests](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
-* [File an issue](https://github.com/microsoft/vscode/issues)
-* Connect with the extension author community on [GitHub Discussions](https://github.com/microsoft/vscode-discussions/discussions) or [Slack](https://aka.ms/vscode-dev-community)
-* Follow [@code](https://twitter.com/code) and let us know what you think!
+- Ask a question on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode)
+- [Request a new feature](CONTRIBUTING.md)
+- Upvote [popular feature requests](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
+- [File an issue](https://github.com/microsoft/vscode/issues)
+- Connect with the extension author community on [GitHub Discussions](https://github.com/microsoft/vscode-discussions/discussions) or [Slack](https://aka.ms/vscode-dev-community)
+- Follow [@code](https://twitter.com/code) and let us know what you think!
 
 See our [wiki](https://github.com/microsoft/vscode/wiki/Feedback-Channels) for a description of each of these channels and information on some other available community-driven channels.
 
@@ -231,10 +238,11 @@ VS Code includes a set of built-in extensions located in the [extensions](extens
 
 This repository includes a Visual Studio Code Dev Containers / GitHub Codespaces development container.
 
-* For [Dev Containers](https://aka.ms/vscode-remote/download/containers), use the **Dev Containers: Clone Repository in Container Volume...** command which creates a Docker volume for better disk I/O on macOS and Windows.
-  * If you already have VS Code and Docker installed, you can also click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/vscode) to get started. This will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
+- For [Dev Containers](https://aka.ms/vscode-remote/download/containers), use the **Dev Containers: Clone Repository in Container Volume...** command which creates a Docker volume for better disk I/O on macOS and Windows.
 
-* For Codespaces, install the [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension in VS Code, and use the **Codespaces: Create New Codespace** command.
+  - If you already have VS Code and Docker installed, you can also click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/vscode) to get started. This will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
+
+- For Codespaces, install the [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension in VS Code, and use the **Codespaces: Create New Codespace** command.
 
 Docker / the Codespace should have at least **4 Cores and 6 GB of RAM (8 GB recommended)** to run full build. See the [development container README](.devcontainer/README.md) for more information.
 
