@@ -1,34 +1,204 @@
-# Visual Studio Code - Open Source ("Code - OSS")
+# CursorClone - AI-Powered Code Editor
 
-[![Feature Requests](https://img.shields.io/github/issues/microsoft/vscode/feature-request.svg)](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
-[![Bugs](https://img.shields.io/github/issues/microsoft/vscode/bug.svg)](https://github.com/microsoft/vscode/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
-[![Gitter](https://img.shields.io/badge/chat-on%20gitter-yellow.svg)](https://gitter.im/Microsoft/vscode)
+[![Build Status](https://github.com/magare/vscode/actions/workflows/build.yml/badge.svg)](https://github.com/magare/vscode/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/release/magare/vscode.svg)](https://github.com/magare/vscode/releases)
 
-## The Repository
+## About CursorClone
 
-This repository ("`Code - OSS`") is where we (Microsoft) develop the [Visual Studio Code](https://code.visualstudio.com) product together with the community. Not only do we work on code and issues here, we also publish our [roadmap](https://github.com/microsoft/vscode/wiki/Roadmap), [monthly iteration plans](https://github.com/microsoft/vscode/wiki/Iteration-Plans), and our [endgame plans](https://github.com/microsoft/vscode/wiki/Running-the-Endgame). This source code is available to everyone under the standard [MIT license](https://github.com/microsoft/vscode/blob/main/LICENSE.txt).
-
-## Visual Studio Code
+CursorClone is a modern, AI-powered code editor built on the foundation of Visual Studio Code. It combines the robust editing capabilities of VS Code with advanced AI features designed to enhance developer productivity.
 
 <p align="center">
-  <img alt="VS Code in action" src="https://user-images.githubusercontent.com/35271042/118224532-3842c400-b438-11eb-923d-a5f66fa6785a.png">
+  <img alt="CursorClone in action" src="https://user-images.githubusercontent.com/35271042/118224532-3842c400-b438-11eb-923d-a5f66fa6785a.png">
 </p>
 
-[Visual Studio Code](https://code.visualstudio.com) is a distribution of the `Code - OSS` repository with Microsoft-specific customizations released under a traditional [Microsoft product license](https://code.visualstudio.com/License/).
+## Key Features
 
-[Visual Studio Code](https://code.visualstudio.com) combines the simplicity of a code editor with what developers need for their core edit-build-debug cycle. It provides comprehensive code editing, navigation, and understanding support along with lightweight debugging, a rich extensibility model, and lightweight integration with existing tools.
+- 🤖 **AI-Powered Code Completion** - Intelligent code suggestions and auto-completion
+- 🔍 **Smart Code Analysis** - Advanced code understanding and refactoring suggestions  
+- 🚀 **Enhanced Productivity** - AI-assisted development workflows
+- 🌍 **Multi-Platform Support** - Available for Windows, macOS, and Linux
+- 🔧 **Extensible Architecture** - Full compatibility with VS Code extensions
+- 📦 **Automated Builds** - Continuous integration and automated releases
 
-Visual Studio Code is updated monthly with new features and bug fixes. You can download it for Windows, macOS, and Linux on [Visual Studio Code's website](https://code.visualstudio.com/Download). To get the latest releases every day, install the [Insiders build](https://code.visualstudio.com/insiders).
+## Quick Start
+
+### Installation
+
+Download the latest release for your platform:
+- [Windows (x64)](https://github.com/magare/vscode/releases/latest)
+- [macOS (Intel)](https://github.com/magare/vscode/releases/latest)
+- [macOS (Apple Silicon)](https://github.com/magare/vscode/releases/latest)
+- [Linux (x64)](https://github.com/magare/vscode/releases/latest)
+- [Linux (ARM64)](https://github.com/magare/vscode/releases/latest)
+
+### Development Build
+
+To build CursorClone from source:
+
+```bash
+# Clone the repository
+git clone https://github.com/magare/vscode.git
+cd vscode
+
+# Setup development environment
+chmod +x setup-cursorclone.sh
+./setup-cursorclone.sh
+
+# Build the application
+chmod +x build-cursorclone.js
+./build-cursorclone.js
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js 18 or higher
+- npm or yarn
+- Git
+- Python 3.x (for native modules)
+
+### Platform-specific Requirements
+
+**Linux:**
+```bash
+sudo apt-get install build-essential pkg-config libx11-dev libxkbfile-dev libsecret-1-dev
+```
+
+**macOS:**
+- Xcode Command Line Tools
+
+**Windows:**
+- Visual Studio Build Tools or Visual Studio Community
+
+### Building
+
+```bash
+# Install dependencies
+npm ci
+
+# Compile TypeScript
+npm run compile
+
+# Build extensions
+npm run compile-extensions
+
+# Package for your platform
+./build-cursorclone.js --platform $(uname -s | tr '[:upper:]' '[:lower:]')
+```
+
+### Automated Build Commands
+
+The build system supports various automation commands:
+
+```bash
+# Full build with upstream sync
+./build-cursorclone.js
+
+# Build specific platform
+./build-cursorclone.js --platform linux --arch x64
+
+# Skip upstream sync
+./build-cursorclone.js --skip-sync
+
+# Verbose output
+./build-cursorclone.js --verbose
+
+# Release build
+./build-cursorclone.js --release
+```
 
 ## Contributing
 
-There are many ways in which you can participate in this project, for example:
+We welcome contributions to CursorClone! Here's how you can help:
 
-* [Submit bugs and feature requests](https://github.com/microsoft/vscode/issues), and help us verify as they are checked in
-* Review [source code changes](https://github.com/microsoft/vscode/pulls)
-* Review the [documentation](https://github.com/microsoft/vscode-docs) and make pull requests for anything from typos to additional and new content
+### Ways to Contribute
 
-If you are interested in fixing issues and contributing directly to the code base,
+- 🐛 **Bug Reports** - Report issues and bugs
+- 💡 **Feature Requests** - Suggest new AI-powered features  
+- 🔧 **Code Contributions** - Submit pull requests
+- 📖 **Documentation** - Improve documentation and examples
+- 🧪 **Testing** - Help test new features and releases
+
+### Development Workflow
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-ai-feature`
+3. **Setup development environment**: `./setup-cursorclone.sh`
+4. **Make your changes**
+5. **Test your changes**: `npm test`
+6. **Build locally**: `./build-cursorclone.js --skip-sync`
+7. **Submit a pull request**
+
+### Code Guidelines
+
+- Follow the existing code style and conventions
+- Write meaningful commit messages
+- Add tests for new functionality
+- Update documentation as needed
+- Use tabs for indentation (following VS Code conventions)
+
+## Architecture
+
+CursorClone is built on the VS Code architecture with the following enhancements:
+
+```
+CursorClone Architecture
+├── Core Editor (VS Code Base)
+├── AI Integration Layer
+│   ├── Code Completion Engine
+│   ├── Smart Analysis Service
+│   └── AI Model Interface
+├── Enhanced Extensions
+│   ├── AI-Powered IntelliSense
+│   ├── Smart Refactoring Tools
+│   └── Productivity Enhancers
+└── Build & Release Automation
+    ├── Multi-platform CI/CD
+    ├── Automated Testing
+    └── Release Management
+```
+
+## Roadmap
+
+### Current Focus (v1.x)
+- ✅ Complete VS Code fork and rebranding
+- ✅ Automated build system
+- ⏳ Basic AI code completion
+- ⏳ Enhanced IntelliSense
+
+### Upcoming (v2.x)
+- 🔄 Advanced AI code analysis
+- 🔄 Smart refactoring suggestions
+- 🔄 Natural language code generation
+- 🔄 AI-powered debugging assistance
+
+### Future (v3.x+)
+- 📋 Multi-model AI support
+- 📋 Custom AI model integration
+- 📋 Collaborative AI features
+- 📋 Advanced productivity workflows
+
+## License
+
+CursorClone is licensed under the [MIT License](LICENSE.txt), the same as the underlying VS Code project.
+
+## Acknowledgments
+
+- **Microsoft VS Code Team** - For creating the amazing foundation
+- **Open Source Community** - For continuous contributions and feedback
+- **Contributors** - Everyone who helps make CursorClone better
+
+## Support
+
+- 📧 **Issues**: [GitHub Issues](https://github.com/magare/vscode/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/magare/vscode/discussions)
+- 📖 **Documentation**: [Wiki](https://github.com/magare/vscode/wiki)
+
+---
+
+**Note**: CursorClone is an independent project and is not affiliated with Microsoft or the official Visual Studio Code product.
 please see the document [How to Contribute](https://github.com/microsoft/vscode/wiki/How-to-Contribute), which covers the following:
 
 * [How to build and run from source](https://github.com/microsoft/vscode/wiki/How-to-Contribute)
